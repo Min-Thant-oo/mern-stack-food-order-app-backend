@@ -26,7 +26,8 @@ export const jwtParse = async (
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith("Bearer ")) {
-    return res.sendStatus(401);
+    res.sendStatus(401);
+    return;
   }
 
   // Bearer lshdflshdjkhvjkshdjkvh34h5k3h54jkh
@@ -39,13 +40,15 @@ export const jwtParse = async (
     const user = await User.findOne({ auth0Id });
 
     if (!user) {
-      return res.sendStatus(401);
+      res.sendStatus(401);
+      return;
     }
 
     req.auth0Id = auth0Id as string;
     req.userId = user._id.toString();
     next();
   } catch (error) {
-    return res.sendStatus(401);
+    res.sendStatus(401);
+    return;
   }
 };

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, RequestHandler, Response } from "express";
 import User from "../models/user";
 
 const createCurrentUser = async (req: Request, res: Response): Promise<void> => {
@@ -21,13 +21,14 @@ const createCurrentUser = async (req: Request, res: Response): Promise<void> => 
     }
 };
 
-const updateCurrentUser = async (req: Request, res: Response) => {
+const updateCurrentUser: RequestHandler = async (req: Request, res: Response) => {
     try {
         const { name, addressLine1, country, city } = req.body;
         const user = await User.findById(req.userId);
 
         if(!user) {
-            return res.status(404).json({ message: "User not found" });
+            res.status(404).json({ message: "User not found" });
+            return;
         }
 
         user.name = name;
