@@ -12,12 +12,14 @@ declare global {
   }
 }
 
+// this ensures we get a valid token in the request
 export const jwtCheck = auth({
   audience: process.env.AUTH0_AUDIENCE,
   issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
   tokenSigningAlg: "RS256",
 });
 
+// this pulls the current users information out of the token and passes it onto the request
 export const jwtParse = async (
   req: Request,
   res: Response,
