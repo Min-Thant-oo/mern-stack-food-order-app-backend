@@ -11,9 +11,9 @@ mongoose
     .then(() => console.log('Connected to MongoDB'))
 
 cloudinary.config({
-    cloud_name: process.env.COULDINARY_CLOUD_NAME,
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
-    api_secrete: process.env.COULDINARY_API_SECRET,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
 const app = express();
