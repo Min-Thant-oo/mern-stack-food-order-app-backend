@@ -24,6 +24,8 @@ const createCurrentUser = async (req: Request, res: Response): Promise<void> => 
 const updateCurrentUser: RequestHandler = async (req: Request, res: Response) => {
     try {
         const { name, addressLine1, country, city } = req.body;
+
+        // jwtParse added userId to the req body
         const user = await User.findById(req.userId);
 
         if(!user) {
@@ -47,6 +49,8 @@ const updateCurrentUser: RequestHandler = async (req: Request, res: Response) =>
 
 const getCurrentUser = async (req: Request, res: Response) => {
     try {
+        // looking for a document where the _id field matches req.userId
+        // same as "await User.findById(req.userId)"
         const currentUser = await User.findOne({ _id: req.userId })
         if(!currentUser) {
             res.status(404).json({ message: "User not found" });
