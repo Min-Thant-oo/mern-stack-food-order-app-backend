@@ -32,7 +32,8 @@ const getMyRestaurant = async (req: Request, res: Response) => {
     try {
         const restaurant = await Restaurant.findOne({ user: req.userId });
         if (!restaurant) {
-            res.status(404).json({ message: "restaurant not found" });
+            res.status(200).json(null);
+            return;
         }
         res.json(restaurant);
         return;
