@@ -66,7 +66,7 @@ const searchRestaurant = async (req: Request, res: Response) => {
             pagination: {
                 total,
                 page,
-                pages: Math.ceil(total / pageSize), //50 total results, pageSize = 10 >>> pages = 5 
+                pages: Math.ceil(total / pageSize), // total results = 50, pageSize = 10 >>> pages = 5 
             },
         };
     
@@ -77,6 +77,24 @@ const searchRestaurant = async (req: Request, res: Response) => {
     }
 }
 
+const getRestaurant = async (req: Request, res: Response) => {
+    try {
+      const restaurantId = req.params.restaurantId;
+  
+      const restaurant = await Restaurant.findById(restaurantId);
+      if (!restaurant) {
+        res.status(404).json({ message: "restaurant not found" });
+        return;
+      }
+  
+      res.json(restaurant);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "something went wrong" });
+    }
+};
+
 export default {
     searchRestaurant,
+    getRestaurant,
 };
