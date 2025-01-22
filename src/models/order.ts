@@ -18,7 +18,9 @@ const orderSchema = new mongoose.Schema({
             name: { type: String, required: true },
         },
     ],
-    totalAmount: Number,
+    subTotal: Number,   // Total cost of items
+    deliveryPrice: Number,  // Delivery cost
+    totalAmount: Number,    // Total cost of items + delivery
     discountPercentage: { type: Number, default: 0 },  // Discount percentage (e.g., 10 for 10%)
     discountedAmount: { type: Number, default: 0 },     // The amount after discount
     deliveryStatus: {

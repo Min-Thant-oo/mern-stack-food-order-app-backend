@@ -157,6 +157,8 @@ const stripeWebhookHandler = async (req: Request, res: Response) => {
             return res.status(404).json({ message: "Order not found" });
         }
   
+        order.subtotal = event.data.object.amount_subtotal;
+        order.deliveryPrice = event.data.object.shipping_cost?.amount_subtotal;
         order.totalAmount = event.data.object.amount_total;
         order.paymentStatus = "paid";
     
