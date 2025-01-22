@@ -37,7 +37,8 @@ const createCheckoutSession = async (req: Request, res: Response) => {
             lineItems,
             "TEST_ORDER_ID",
             restaurant.deliveryPrice,
-            restaurant._id.toString()
+            restaurant._id.toString(),
+            checkoutSessionRequest.deliveryDetails
         );
   
         if (!session.url) {
@@ -87,9 +88,11 @@ const createSession = async (
     lineItems: Stripe.Checkout.SessionCreateParams.LineItem[],
     orderId: string,
     deliveryPrice: number,
-    restaurantId: string
+    restaurantId: string,
+    deliveryDetails: CheckoutSessionRequest['deliveryDetails']
 ) => {
     const sessionData = await STRIPE.checkout.sessions.create({
+        payment_method_types: ['card'],
         line_items: lineItems,
         shipping_options: [
             {
@@ -108,6 +111,8 @@ const createSession = async (
             orderId,
             restaurantId,
         },
+
+        customer_email: deliveryDetails.email,
         success_url: `${FRONTEND_URL}/order-status?success=true`,
         cancel_url: `${FRONTEND_URL}/detail/${restaurantId}?cancelled=true`,
     });
