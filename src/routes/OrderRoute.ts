@@ -12,4 +12,6 @@ router.post(
 );
 
 router.post("/checkout/webhook", OrderController.stripeWebhookHandler as express.RequestHandler);
+
+router.get("/", jwtCheck, jwtParse, OrderController.getMyOrders);
 export default router;
