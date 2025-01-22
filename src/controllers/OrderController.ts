@@ -18,6 +18,7 @@ type CheckoutSessionRequest = {
       name: string;
       addressLine1: string;
       city: string;
+      country: string;
     };
     restaurantId: string;
   };
@@ -38,7 +39,7 @@ const createCheckoutSession = async (req: Request, res: Response) => {
             deliveryStatus: "placed",
             deliveryDetails: checkoutSessionRequest.deliveryDetails,
             cartItems: checkoutSessionRequest.cartItems,
-            paymentStatus: "paid",
+            paymentStatus: "unpaid",
             createdAt: new Date(),
         });
   
@@ -133,6 +134,40 @@ const createSession = async (
     return sessionData;
 };
 
+
+const stripeWebhookHandler = async (req: Request, res: Response) => {
+    let event;
+  
+    try {
+        const sig = req.headers["stripe-signature"];
+        event = STRIPE.webhooks.constructEvent(
+            req.body,
+            sig as string,
+            STRIPE_ENDPOINT_SECRET
+        );
+    } catch (error: any) {
+        console.log(error);
+        return res.status(400).send(`Webhook error: ${error.message}`);
+    }
+  
+    if(event.type === "checkout.session.completed") {
+        const order = await Order.findById(event.data.object.metadata?.orderId);
+  
+        if(!order) {
+            return res.status(404).json({ message: "Order not found" });
+        }
+  
+        order.totalAmount = event.data.object.amount_total;
+        order.paymentStatus = "paid";
+    
+        await order.save();
+    };
+
+    res.status(200).send();
+};
+  
+
 export default {
-    createCheckoutSession
+    createCheckoutSession,
+    stripeWebhookHandler,
 }
