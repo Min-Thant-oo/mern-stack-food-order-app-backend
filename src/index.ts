@@ -38,3 +38,5 @@ app.use('/api/order', orderRoute)
 app.listen(7000, () => {
     console.log('Server is running on port 7000');
 });
+
+// trying to deploy to vercel now
