@@ -19,5 +19,6 @@ router.post('/', upload.single("imageFile"), validateMyRestaurantRequest, jwtChe
 router.get('/', jwtCheck, jwtParse, MyRestaurantController.getMyRestaurant);
 router.put('/', upload.single("imageFile"), validateMyRestaurantRequest, jwtCheck, jwtParse, MyRestaurantController.updateMyRestaurant);
 router.get("/order", jwtCheck, jwtParse, MyRestaurantController.getMyRestaurantOrders  as express.RequestHandler);
+router.patch("/order/:orderId/status", jwtCheck, jwtParse, MyRestaurantController.updateOrderStatus as express.RequestHandler);
 
 export default router;
