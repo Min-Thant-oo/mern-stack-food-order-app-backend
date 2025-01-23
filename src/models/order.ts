@@ -23,17 +23,12 @@ const orderSchema = new mongoose.Schema({
     totalAmount: Number,    // Total cost of items + delivery
     discountPercentage: { type: Number, default: 0 },  // Discount percentage (e.g., 10 for 10%)
     discountedAmount: { type: Number, default: 0 },     // The amount after discount
-    deliveryStatus: {
+    status: {
         type: String,
-        enum: ["placed", "inProgress", "outForDelivery", "delivered"],
-    },
-    paymentStatus: {
-        type: String,
-        enum: ["unpaid", "paid", "refunded"],
-        default: "unpaid",  // Default to unpaid if not set
+        enum: ["placed", "paid", "inProgress", "outForDelivery", "delivered", "cancelled"],
     },
     createdAt: { type: Date, default: Date.now },
-});
+}, { strict: true });
 
 const Order = mongoose.model("Order", orderSchema);
 export default Order;

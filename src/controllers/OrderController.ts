@@ -36,10 +36,9 @@ const createCheckoutSession = async (req: Request, res: Response) => {
         const newOrder = new Order({
             restaurant: restaurant,
             user: req.userId,
-            deliveryStatus: "placed",
+            status: "placed",
             deliveryDetails: checkoutSessionRequest.deliveryDetails,
             cartItems: checkoutSessionRequest.cartItems,
-            paymentStatus: "unpaid",
             createdAt: new Date(),
         });
   
@@ -160,7 +159,7 @@ const stripeWebhookHandler = async (req: Request, res: Response) => {
         order.subTotal = event.data.object.amount_subtotal;
         order.deliveryPrice = event.data.object.shipping_cost?.amount_subtotal;
         order.totalAmount = event.data.object.amount_total;
-        order.paymentStatus = "paid";
+        order.status = "paid";
     
         await order.save();
     };
