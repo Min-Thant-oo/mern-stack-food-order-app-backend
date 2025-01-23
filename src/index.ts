@@ -20,7 +20,7 @@ cloudinary.config({
 
 const app = express();
 
-app.use(cors());
+// app.use(cors());
 // app.use(cors({
 //     origin: [
 //       'https://solareats.minthantoo.com', // frontend domain
