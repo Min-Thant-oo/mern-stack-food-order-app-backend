@@ -28,7 +28,8 @@ app.use(cors({
       'https://mern-stack-food-order-app-backend.vercel.app' // backend domain
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'], 
+    credentials: true
   }));
 
 app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
