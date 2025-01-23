@@ -18,5 +18,6 @@ const upload = multer({
 router.post('/', upload.single("imageFile"), validateMyRestaurantRequest, jwtCheck, jwtParse, MyRestaurantController.createMyRestaurant);
 router.get('/', jwtCheck, jwtParse, MyRestaurantController.getMyRestaurant);
 router.put('/', upload.single("imageFile"), validateMyRestaurantRequest, jwtCheck, jwtParse, MyRestaurantController.updateMyRestaurant);
+router.get("/order", jwtCheck, jwtParse, MyRestaurantController.getMyRestaurantOrders  as express.RequestHandler);
 
 export default router;
