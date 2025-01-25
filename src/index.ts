@@ -21,10 +21,7 @@ cloudinary.config({
 const app = express();
 
 app.use(cors({
-    origin: [
-      'https://solareats.minthantoo.com',
-      'http://localhost:5173'
-    ],
+    origin: ['https://solareats.minthantoo.com'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'auth0-authorization-extension']
 }));
@@ -33,7 +30,7 @@ app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
 
 app.use(express.json());
 
-app.get("/health", async(req: Request, res: Response) => {
+app.get("/health1", async(req: Request, res: Response) => {
     res.send({ message: "health is OK!" });
 })
 
