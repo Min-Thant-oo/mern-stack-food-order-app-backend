@@ -29,6 +29,7 @@ const orderSchema = new mongoose.Schema({
         enum: ["placed", "paid", "inProgress", "outForDelivery", "delivered", "cancelled"],
     },
     createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: null },
 }, { strict: true });
 
 const Order = mongoose.model("Order", orderSchema);
