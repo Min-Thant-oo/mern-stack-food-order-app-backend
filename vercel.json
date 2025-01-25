@@ -9,14 +9,16 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "src/index.ts",
-      "config": {
-        "maxDuration": 40
-      }
+      "dest": "src/index.ts"
     },
     {
       "src": "/(.*)",
       "dest": "src/index.ts"
     }
-  ]
+  ],
+  "functions": {
+    "api/**/*.ts": {
+      "maxDuration": 30
+    }
+  }
 }
