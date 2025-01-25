@@ -16,6 +16,7 @@ const orderSchema = new mongoose.Schema({
             menuItemId: { type: String, required: true },
             quantity: { type: Number, required: true },
             name: { type: String, required: true },
+            price: { type: Number, required: true },
         },
     ],
     subTotal: Number,   // Total cost of items
