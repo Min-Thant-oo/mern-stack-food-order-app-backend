@@ -20,17 +20,14 @@ cloudinary.config({
 
 const app = express();
 
-// app.use(cors());
-// app.use(cors({
-//     origin: [
-//       'https://solareats.minthantoo.com', // frontend domain
-//       'http://localhost:3000', // For local development
-//       'https://mern-stack-food-order-app-backend.vercel.app' // backend domain
-//     ],
-//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-//     allowedHeaders: ['Content-Type', 'Authorization'], 
-//     credentials: true
-//   }));
+app.use(cors({
+    origin: [
+      'https://solareats.minthantoo.com',
+      'http://localhost:5173'
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'auth0-authorization-extension']
+}));
 
 app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
 
