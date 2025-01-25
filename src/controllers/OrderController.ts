@@ -12,6 +12,7 @@ type CheckoutSessionRequest = {
       menuItemId: string;
       name: string;
       quantity: string;
+      price: number;
     }[];
     deliveryDetails: {
       email: string;
@@ -170,6 +171,7 @@ const stripeWebhookHandler = async (req: Request, res: Response) => {
 const getMyOrders = async (req: Request, res: Response) => {
     try {
         const orders = await Order.find({ user: req.userId })
+            .sort({ createdAt: -1 })
             .populate("restaurant")
             .populate("user");
   

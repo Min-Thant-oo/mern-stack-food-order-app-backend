@@ -20,9 +20,10 @@ cloudinary.config({
 
 const app = express();
 
+// app.use(cors());
 app.use(cors({
-    origin: ['https://solareats.minthantoo.com'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    origin: ['https://solareats.minthantoo.com', 'http://localhost:5173'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization', 'auth0-authorization-extension']
 }));
 
