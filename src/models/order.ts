@@ -28,6 +28,11 @@ const orderSchema = new mongoose.Schema({
         type: String,
         enum: ["placed", "paid", "inProgress", "outForDelivery", "delivered", "cancelled"],
     },
+    cancelledBy: {
+        type: String,
+        enum: ["customer", "restaurant", null],
+        default: null,
+    },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: null },
 }, { strict: true });

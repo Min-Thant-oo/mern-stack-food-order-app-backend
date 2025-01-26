@@ -171,7 +171,7 @@ const stripeWebhookHandler = async (req: Request, res: Response) => {
 const getMyOrders = async (req: Request, res: Response) => {
     try {
         const orders = await Order.find({ user: req.userId })
-            .sort({ createdAt: -1 })
+            .sort({ updatedAt: -1, createdAt: -1 })  // Sort by most recently updated first, then by creation date
             .populate("restaurant")
             .populate("user");
   
@@ -181,10 +181,38 @@ const getMyOrders = async (req: Request, res: Response) => {
         res.status(500).json({ message: "something went wrong" });
     }
 };
+
+const cancelMyOrder = async (req: Request, res: Response) => {
+    try {
+        const { orderId } = req.params;
+
+        const order = await Order.findById(orderId);
+        if(!order) {
+            return res.status(404).json({ message: "Order not found" });
+        }
+
+        const ownThisOrder = order.user?._id.toString() === req.userId;
+        if(!ownThisOrder) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        order.cancelledBy = 'customer';
+        order.status = 'cancelled';
+        order.updatedAt = new Date();
+        await order.save();
+    
+        res.status(200).json(order);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Something went wrong" });
+    }
+}
   
 
 export default {
     createCheckoutSession,
     stripeWebhookHandler,
     getMyOrders,
+    cancelMyOrder,
 }

@@ -12,6 +12,6 @@ router.post(
 );
 
 router.post("/checkout/webhook", OrderController.stripeWebhookHandler as express.RequestHandler);
-
 router.get("/", jwtCheck, jwtParse, OrderController.getMyOrders);
+router.patch('/:orderId/cancel', jwtCheck, jwtParse, OrderController.cancelMyOrder  as express.RequestHandler);
 export default router;

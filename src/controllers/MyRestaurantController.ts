@@ -119,6 +119,11 @@ const updateOrderStatus = async (req: Request, res: Response) => {
         if(restaurant?.user?._id.toString() !== req.userId) {
             return res.status(401).send();
         }
+
+        // Add cancellation logic for cancelled orders by restaurant
+        if (status === 'cancelled') {
+            order.cancelledBy = 'restaurant';
+        }
   
         order.status = status;
         order.updatedAt = new Date();
@@ -129,7 +134,7 @@ const updateOrderStatus = async (req: Request, res: Response) => {
         console.log(error);
         res.status(500).json({ message: "unable to update order status" });
     }
-  };
+};
 
 export default {
     createMyRestaurant,
