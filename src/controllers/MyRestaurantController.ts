@@ -77,12 +77,23 @@ const updateMyRestaurant = async (req: Request, res: Response) => {
 
 
 const uploadImage = async (file: Express.Multer.File) => {
-    const image = file;
-    const base64Image = Buffer.from(image.buffer).toString("base64");
-    const dataURI = `data:${image.mimetype};base64,${base64Image}`;
-  
-    const uploadResponse = await cloudinary.v2.uploader.upload(dataURI);
-    return uploadResponse.url;
+    try {
+        if (!file) {
+            throw new Error('No image file provided');
+        }
+
+        const image = file;
+        const base64Image = Buffer.from(image.buffer).toString("base64");
+        const dataURI = `data:${image.mimetype};base64,${base64Image}`;
+    
+        const uploadResponse = await cloudinary.v2.uploader.upload(dataURI, {
+            secure: true,
+        });
+        return uploadResponse.secure_url;
+    } catch (error) {
+        console.error('Image upload error:', error);
+        throw new Error('Failed to upload image to Cloudinary');
+    }
 };
 
 const getMyRestaurantOrders = async (req: Request, res: Response) => {
