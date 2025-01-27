@@ -26,7 +26,7 @@ const orderSchema = new mongoose.Schema({
     discountedAmount: { type: Number, default: 0 },     // The amount after discount
     status: {
         type: String,
-        enum: ["placed", "paid", "inProgress", "outForDelivery", "delivered", "cancelled"],
+        enum: ["unpaid", "paid", "inProgress", "outForDelivery", "delivered", "cancelled"],
     },
     cancelledBy: {
         type: String,
