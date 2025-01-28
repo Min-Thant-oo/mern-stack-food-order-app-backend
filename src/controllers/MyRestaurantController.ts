@@ -3,6 +3,7 @@ import Restaurant from "../models/restaurant";
 import cloudinary  from 'cloudinary';
 import mongoose from "mongoose";
 import Order from "../models/order";
+import { processRefund } from "../services/refundService";
 
 const createMyRestaurant = async (req: Request, res: Response) => {
     try {
@@ -126,14 +127,22 @@ const updateOrderStatus = async (req: Request, res: Response) => {
         }
     
         const restaurant = await Restaurant.findById(order.restaurant);
-  
         if(restaurant?.user?._id.toString() !== req.userId) {
             return res.status(401).send();
         }
 
-        // Add cancellation logic for cancelled orders by restaurant
+        // Cancellation logic for cancelled orders by restaurant
         if (status === 'cancelled') {
             order.cancelledBy = 'restaurant';
+            // Process refund for restaurant cancellation
+            try {
+                await processRefund(order, 'Cancelled by restaurant');
+            } catch (refundError: any) {
+                return res.status(400).json({ 
+                    message: "Unable to process refund",
+                    error: refundError.message 
+                });
+            }
         }
   
         order.status = status;

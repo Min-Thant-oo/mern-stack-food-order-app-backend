@@ -35,6 +35,12 @@ const orderSchema = new mongoose.Schema({
     },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: null },
+
+    // for refund
+    paymentIntentId: { type: String },
+    refundStatus: { type: String, enum: ['none', 'pending', 'completed', 'failed'], default: 'none' },
+    refundAmount: { type: Number },
+    refundReason: { type: String },
 }, { strict: true });
 
 const Order = mongoose.model("Order", orderSchema);

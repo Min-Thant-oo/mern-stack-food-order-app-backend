@@ -2,6 +2,7 @@ import Stripe from "stripe";
 import { Request, Response } from "express";
 import Restaurant, { MenuItemType } from "../models/restaurant";
 import Order from "../models/order";
+import { processRefund } from "../services/refundService";
 
 const STRIPE = new Stripe(process.env.STRIPE_API_KEY as string);
 const FRONTEND_URL = process.env.FRONTEND_URL as string;
@@ -160,6 +161,7 @@ const stripeWebhookHandler = async (req: Request, res: Response) => {
         order.subTotal = event.data.object.amount_subtotal;
         order.deliveryPrice = event.data.object.shipping_cost?.amount_subtotal;
         order.totalAmount = event.data.object.amount_total;
+        order.paymentIntentId = event.data.object.payment_intent as string; // for refund
         order.status = "paid";
     
         await order.save();
@@ -194,6 +196,16 @@ const cancelMyOrder = async (req: Request, res: Response) => {
         const ownThisOrder = order.user?._id.toString() === req.userId;
         if(!ownThisOrder) {
             return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        // Process refund
+        try {
+            await processRefund(order, 'Cancelled by customer');
+        } catch (refundError: any) {
+            return res.status(400).json({ 
+                message: "Unable to process refund",
+                error: refundError.message 
+            });
         }
 
         order.cancelledBy = 'customer';
