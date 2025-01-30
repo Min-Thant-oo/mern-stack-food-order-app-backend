@@ -35,8 +35,7 @@ export const processRefund = async (order: any, reason: string) => {
 };
 
 const calculateRefundAmount = (order: any) => {
-  // You can implement different refund policies here
-  // For example, full refund if cancelled within 5 minutes
+  // full refund if cancelled within 5 minutes
   const orderTime = new Date(order.createdAt).getTime();
   const currentTime = new Date().getTime();
   const timeDifference = currentTime - orderTime;
